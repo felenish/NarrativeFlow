@@ -1,0 +1,6 @@
+.main-panel {
+  flex: 1;
+  background: #fff;
+  padding: 2rem;
+  overflow-y: auto;
+}

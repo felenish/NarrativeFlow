@@ -1,0 +1,23 @@
+.sidebar {
+  width: 260px;
+  background: #22223b;
+  color: #fff;
+  padding: 1rem;
+  overflow-y: auto;
+}
+.sidebar h2, .sidebar h3, .sidebar h4 {
+  margin-top: 1rem;
+}
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+.sidebar li {
+  margin: 0.5rem 0;
+  cursor: pointer;
+}
+.sidebar input, .sidebar button {
+  margin: 0.25rem 0;
+  width: 100%;
+  padding: 0.25rem;
+}
