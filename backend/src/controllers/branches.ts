@@ -1,17 +1,25 @@
 import { Request, Response } from 'express';
+import prisma from '../prisma';
 
-export const getAllBranches = (req: Request, res: Response) => {
-  res.json({ message: 'List all branches (not implemented)' });
+export const getAllBranches = async (req: Request, res: Response) => {
+  const branches = await prisma.branch.findMany();
+  res.json(branches);
 };
 
-export const createBranch = (req: Request, res: Response) => {
-  res.json({ message: 'Create a branch (not implemented)' });
+export const createBranch = async (req: Request, res: Response) => {
+  const { name, bookId } = req.body;
+  if (!name || !bookId) return res.status(400).json({ error: 'name and bookId required' });
+  const branch = await prisma.branch.create({ data: { name, bookId } });
+  res.status(201).json(branch);
 };
 
-export const getBranchById = (req: Request, res: Response) => {
-  res.json({ message: `Get branch ${req.params.id} (not implemented)` });
+export const getBranchById = async (req: Request, res: Response) => {
+  const branch = await prisma.branch.findUnique({ where: { id: req.params.id } });
+  if (!branch) return res.status(404).json({ error: 'Branch not found' });
+  res.json(branch);
 };
 
-export const mergeBranch = (req: Request, res: Response) => {
+export const mergeBranch = async (req: Request, res: Response) => {
+  // Placeholder for merge logic
   res.json({ message: `Merge branch ${req.params.id} (not implemented)` });
 };
