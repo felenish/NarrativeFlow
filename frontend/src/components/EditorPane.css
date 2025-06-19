@@ -1,0 +1,15 @@
+.editor-pane {
+  display: flex;
+  gap: 2rem;
+}
+.editor-pane__editor, .editor-pane__preview {
+  flex: 1;
+  min-width: 0;
+}
+.editor-pane__preview {
+  background: #f4f4f4;
+  padding: 1rem;
+  border-radius: 4px;
+  overflow-y: auto;
+  max-height: 300px;
+}
