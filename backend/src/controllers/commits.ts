@@ -6,10 +6,41 @@ export const getAllCommits = async (req: Request, res: Response) => {
   res.json(commits);
 };
 
+export const autoSaveDraft = async (req: Request, res: Response) => {
+  // For MVP: Save a draft commit with a special message or flag
+  const { branchId, parentId, content, filePath } = req.body;
+  if (!branchId || !content || !filePath) {
+    return res.status(400).json({ error: 'branchId, content, and filePath required' });
+  }
+  // Create a commit with a 'draft' message
+  const commit = await prisma.commit.create({
+    data: {
+      branchId,
+      message: '[draft]',
+      parentId,
+      snapshots: {
+        create: [{ filePath, blobSha: content }], // For MVP, store content in blobSha
+      },
+    },
+    include: { snapshots: true },
+  });
+  res.status(201).json(commit);
+};
+
 export const createCommit = async (req: Request, res: Response) => {
-  const { branchId, message, parentId } = req.body;
-  if (!branchId || !message) return res.status(400).json({ error: 'branchId and message required' });
-  const commit = await prisma.commit.create({ data: { branchId, message, parentId } });
+  const { branchId, message, parentId, content, filePath } = req.body;
+  if (!branchId || !message || !content || !filePath) return res.status(400).json({ error: 'branchId, message, content, and filePath required' });
+  const commit = await prisma.commit.create({
+    data: {
+      branchId,
+      message,
+      parentId,
+      snapshots: {
+        create: [{ filePath, blobSha: content }], // For MVP, store content in blobSha
+      },
+    },
+    include: { snapshots: true },
+  });
   res.status(201).json(commit);
 };
 
