@@ -3,6 +3,11 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { authenticateJWT, generateToken, AuthRequest } from './auth';
 import booksRouter from './routes/books';
+import chaptersRouter from './routes/chapters';
+import scenesRouter from './routes/scenes';
+import branchesRouter from './routes/branches';
+import commitsRouter from './routes/commits';
+import diffsRouter from './routes/diffs';
 
 dotenv.config();
 
@@ -31,6 +36,11 @@ app.get('/protected', authenticateJWT as RequestHandler, ((req, res) => {
 }) as RequestHandler);
 
 app.use('/api/books', booksRouter);
+app.use('/api/chapters', chaptersRouter);
+app.use('/api/scenes', scenesRouter);
+app.use('/api/branches', branchesRouter);
+app.use('/api/commits', commitsRouter);
+app.use('/api/diffs', diffsRouter);
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);

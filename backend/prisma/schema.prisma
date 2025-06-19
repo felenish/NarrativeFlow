@@ -1,0 +1,74 @@
+// Prisma schema for Narrative Flow
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  books     Book[]
+  createdAt DateTime @default(now())
+}
+
+model Book {
+  id        String    @id @default(uuid())
+  title     String
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String
+  chapters  Chapter[]
+  branches  Branch[]
+  createdAt DateTime  @default(now())
+}
+
+model Chapter {
+  id        String   @id @default(uuid())
+  title     String
+  book      Book     @relation(fields: [bookId], references: [id])
+  bookId    String
+  scenes    Scene[]
+  createdAt DateTime @default(now())
+}
+
+model Scene {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  chapter   Chapter  @relation(fields: [chapterId], references: [id])
+  chapterId String
+  createdAt DateTime @default(now())
+}
+
+model Branch {
+  id        String    @id @default(uuid())
+  name      String
+  book      Book      @relation(fields: [bookId], references: [id])
+  bookId    String
+  commits   Commit[]
+  createdAt DateTime  @default(now())
+}
+
+model Commit {
+  id        String    @id @default(uuid())
+  branch    Branch    @relation(fields: [branchId], references: [id])
+  branchId  String
+  message   String
+  parentId  String?
+  parent    Commit?   @relation("CommitToParent", fields: [parentId], references: [id])
+  snapshots Snapshot[]
+  createdAt DateTime  @default(now())
+}
+
+model Snapshot {
+  id        String   @id @default(uuid())
+  commit    Commit   @relation(fields: [commitId], references: [id])
+  commitId  String
+  filePath  String
+  blobSha   String
+}
