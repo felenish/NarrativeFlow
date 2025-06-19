@@ -8,14 +8,20 @@ export const getAllBooks = async (req: Request, res: Response) => {
 
 export const createBook = async (req: Request, res: Response) => {
   const { title, userId } = req.body;
-  if (!title || !userId) return res.status(400).json({ error: 'title and userId required' });
+  if (!title || !userId) {
+    res.status(400).json({ error: 'title and userId required' });
+    return;
+  }
   const book = await prisma.book.create({ data: { title, userId } });
   res.status(201).json(book);
 };
 
 export const getBookById = async (req: Request, res: Response) => {
   const book = await prisma.book.findUnique({ where: { id: req.params.id } });
-  if (!book) return res.status(404).json({ error: 'Book not found' });
+  if (!book) {
+    res.status(404).json({ error: 'Book not found' });
+    return;
+  }
   res.json(book);
 };
 

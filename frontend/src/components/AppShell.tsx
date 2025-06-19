@@ -1,12 +1,12 @@
 import React from 'react';
-import Sidebar from './Sidebar';
-import MainPanel from './MainPanel';
+import Sidebar from './Sidebar.tsx';
+import MainPanel from './MainPanel.tsx';
 import './AppShell.css';
 
-const AppShell: React.FC<{ children?: React.ReactNode }> = ({ children }) => (
+const AppShell: React.FC = () => (
   <div className="app-shell">
     <Sidebar />
-    <MainPanel>{children}</MainPanel>
+    <MainPanel />
   </div>
 );
 
